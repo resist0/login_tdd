@@ -1,29 +1,11 @@
-import 'dart:convert';
-
 import 'package:faker/faker.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
-import 'package:meta/meta.dart';
 
-class HttpAdapter {
-  final Client client;
+import 'package:fordev/infra/http/http.dart';
 
-  HttpAdapter(this.client);
 
-  Future<void> request({
-    @required String url,
-    @required String method,
-    Map body,
-  }) async {
-    final headers = {
-      'content-type': 'application/json ',
-      'accept': 'application/json',
-    };
-    final jsonBody = body != null ? jsonEncode(body) : null;
-    await client.post(url, headers: headers, body: jsonBody);
-  }
-}
 
 class ClientSpy extends Mock implements Client {}
 
@@ -39,6 +21,16 @@ void main() {
   });
 
   group('post', () {
+    PostExpectation mockRequest() => when(
+        client.post(any, body: anyNamed('body'), headers: anyNamed('headers')));
+
+    void mockResponse(int statusCode, {String body = '{"any_key":"any_key"}'}) {
+      mockRequest().thenAnswer((_) async => Response(body, statusCode));
+    }
+
+    setUp(() {
+      mockResponse(200);
+    });
     test('Should call post with correct values', () async {
       await sut
           .request(url: url, method: 'post', body: {'any_key': 'any_value'});
@@ -60,6 +52,36 @@ void main() {
         any,
         headers: anyNamed('headers'),
       ));
+    });
+
+    test('Should return data if post returns 200', () async {
+      final response = await sut.request(url: url, method: 'post');
+
+      expect(response, {'any_key': 'any_key'});
+    });
+
+    test('Should return null if post returns 200 with no data', () async {
+      mockResponse(200, body: '');
+
+      final response = await sut.request(url: url, method: 'post');
+
+      expect(response, null);
+    });
+
+    test('Should return null if post returns 204', () async {
+      mockResponse(204, body: '');
+
+      final response = await sut.request(url: url, method: 'post');
+
+      expect(response, null);
+    });
+
+    test('Should return null if post returns 204 with data', () async {
+      mockResponse(204);
+
+      final response = await sut.request(url: url, method: 'post');
+
+      expect(response, null);
     });
   });
 }
