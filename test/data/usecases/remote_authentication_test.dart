@@ -32,6 +32,7 @@ void main() {
     mockRequest().thenThrow(error);
   }
 
+  // FUNÇÕES EXECUTADAS ANTES DO TESTE
   setUp(() {
     httpClient = HttpClientSpy();
     url = faker.internet.httpUrl();
@@ -43,6 +44,7 @@ void main() {
     mockHttpData(mockValidData());
   });
 
+  // TESTES
   test('Should call HttpClient with correct values', () async {
     await sut.auth(params);
 
