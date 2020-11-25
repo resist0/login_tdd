@@ -20,6 +20,13 @@ void main() {
     url = faker.internet.httpUrl();
   });
 
+  group('shared', () {
+    test('Should throw ServerError if invalid method is provided', () async {
+      final future = sut.request(url: url, method: 'invalid_method');
+
+      expect(future, throwsA(HttpError.serverError));
+    });
+  });
   group('post', () {
     PostExpectation mockRequest() => when(
         client.post(any, body: anyNamed('body'), headers: anyNamed('headers')));
@@ -85,7 +92,7 @@ void main() {
     });
 
     test('Should return BadRequestError if post returns 400', () async {
-      mockResponse(400,body: '');
+      mockResponse(400, body: '');
 
       final future = sut.request(url: url, method: 'post');
 
@@ -116,6 +123,14 @@ void main() {
       expect(future, throwsA(HttpError.forbidden));
     });
 
+    test('Should return NotFoundError if post returns 404', () async {
+      mockResponse(404);
+
+      final future = sut.request(url: url, method: 'post');
+
+      expect(future, throwsA(HttpError.notFound));
+    });
+
     test('Should return ServerError if post returns 500', () async {
       mockResponse(500);
 
@@ -123,6 +138,5 @@ void main() {
 
       expect(future, throwsA(HttpError.serverError));
     });
-
   });
 }
