@@ -1,45 +1,56 @@
 import 'package:flutter/material.dart';
 
+import '../components/components.dart';
+
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              child: Image(
-                image: AssetImage('lib/ui/assets/logo.png'),
-              ),
-            ),
-            Text('Login'.toUpperCase()),
-            Form(
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      icon: Icon(Icons.email),
+            LoginHeader(),
+            HeadLine1(text: 'Login'),
+            Padding(
+              padding: EdgeInsets.all(32),
+              child: Form(
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        icon: Icon(
+                          Icons.email,
+                          color: Theme.of(context).primaryColorLight,
+                        ),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Senha',
-                      icon: Icon(Icons.lock),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8, bottom: 32),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Senha',
+                          icon: Icon(
+                            Icons.lock,
+                            color: Theme.of(context).primaryColorLight,
+                          ),
+                        ),
+                        obscureText: true,
+                      ),
                     ),
-                    obscureText: true,
-                  ),
-                  RaisedButton(
-                    onPressed: () {},
-                    child: Text('Entrar'.toUpperCase()),
-                  ),
-                  FlatButton.icon(
-                    onPressed: () {},
-                    icon: Icon(Icons.person),
-                    label: Text('Criar Conta'),
-                  )
-                ],
+                    RaisedButton(
+                      onPressed: () {},
+                      child: Text('Entrar'.toUpperCase()),
+                    ),
+                    FlatButton.icon(
+                      onPressed: () {},
+                      icon: Icon(Icons.person),
+                      label: Text('Criar Conta'),
+                    )
+                  ],
+                ),
               ),
             ),
           ],
