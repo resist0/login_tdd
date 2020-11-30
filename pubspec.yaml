@@ -11,9 +11,10 @@ environment:
 
 dependencies:
   flutter:
-    sdk: flutter
-  http: 
+    sdk: flutter 
   cupertino_icons: ^1.0.0
+  http:
+  provider:
 
 
 dev_dependencies:
