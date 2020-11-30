@@ -13,26 +13,45 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: Builder(
         builder: (context) {
-          presenter.isLoadingStream.listen((isLoading) {
-            if (isLoading) {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                child: SimpleDialog(
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        CircularProgressIndicator(),
-                        SizedBox(height: 10),
-                        Text('Aguarde ...', textAlign: TextAlign.center),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            }
-          });
+          presenter.isLoadingStream.listen(
+            (isLoading) {
+              if (isLoading) {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  child: SimpleDialog(
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          CircularProgressIndicator(),
+                          SizedBox(height: 10),
+                          Text('Aguarde ...', textAlign: TextAlign.center),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                if (Navigator.canPop(context)) {
+                  Navigator.of(context).pop();
+                }
+              }
+            },
+          );
+
+          presenter.mainErrorStream.listen(
+            (error) {
+              if (error != null) {
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(error, textAlign: TextAlign.center),
+                    backgroundColor: Colors.red[900],
+                  ),
+                );
+              }
+            },
+          );
           return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
