@@ -164,7 +164,7 @@ void main() {
   });
 
 
-      testWidgets('Should enable button if form is valid ', (WidgetTester tester) async {
+    testWidgets('Should enable button if form is valid ', (WidgetTester tester) async {
     await loadPage(tester);
 
     isFormValidController.add(false);
@@ -175,6 +175,18 @@ void main() {
 
   });
 
+  
+    testWidgets('Should call authentication on form submit', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    isFormValidController.add(true);
+    await tester.pump();
+    await tester.tap(find.byType(RaisedButton));
+    await tester.pump();
+
+    verify(presenter.auth()).called(1);
+
+  });
   
 
 }
