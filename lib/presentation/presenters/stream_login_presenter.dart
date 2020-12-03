@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:fordev/domain/helpers/domain_error.dart';
 import 'package:meta/meta.dart';
 
+import '../../domain/helpers/domain_error.dart';
 import '../../domain/usecases/authentication.dart';
 
 import '../protocols/protocols.dart';
@@ -55,7 +55,7 @@ class StreamLoginPresenter {
   Future<void> auth() async {
     _state.isLoading = true;
     _update();
-    
+
     try {
       await authentication.auth(AuthenticationParams(email: _state.email, secret: _state.password));
     } on DomainError catch (error) {
