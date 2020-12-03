@@ -28,8 +28,15 @@ void main() {
   });
 
 
-    test('Should return null if email is null', () {
+  test('Should return null if email is null', () {
     final error = sut.validate(null);
+
+    expect(error, null);
+  });
+
+
+  test('Should return null if email is valid', () {
+    final error = sut.validate('matheus_santos_2000@outlook.com');
 
     expect(error, null);
   });
