@@ -1,17 +1,10 @@
 import 'package:test/test.dart';
 
-import 'package:fordev/validation/protocols/protocols.dart';
+import 'package:fordev/validation/validators/validators.dart';
 
-class EmailValidation implements FieldValidation {
-  final String field;
 
-  EmailValidation(this.field);
 
-  String validate(String value) {
-    return null;
-  }
-  
-}
+
 
 void main() {
 
@@ -21,24 +14,28 @@ void main() {
     sut = EmailValidation('any_field');
   });
 
-  test('Should return null if email is empty', () {
-    final error = sut.validate('');
 
-    expect(error, null);
+  test('Should return null if email is empty', () {
+
+    expect(sut.validate(''), null);
   });
 
 
   test('Should return null if email is null', () {
-    final error = sut.validate(null);
 
-    expect(error, null);
+    expect(sut.validate(null), null);
   });
 
 
   test('Should return null if email is valid', () {
-    final error = sut.validate('matheus_santos_2000@outlook.com');
 
-    expect(error, null);
+    expect(sut.validate('matheus_santos_2000@outlook.com'), null);
+  });
+
+
+  test('Should return error if email is invalid', () {
+
+    expect(sut.validate('matheus_santos_2000'), 'Campo inválido');
   });
 
 }
