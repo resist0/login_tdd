@@ -15,10 +15,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  
-  void _hideKeyboard(){
+  void _hideKeyboard() {
     final currentFocus = FocusScope.of(context);
-    if(!currentFocus.hasPrimaryFocus){
+    if (!currentFocus.hasPrimaryFocus) {
       currentFocus.unfocus();
     }
   }
