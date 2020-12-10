@@ -6,8 +6,6 @@ import 'package:test/test.dart';
 import 'package:fordev/infra/cache/cache.dart';
 
 
-
-
 class FlutterSecureStorageSpy extends Mock implements FlutterSecureStorage {}
 
 
@@ -19,10 +17,7 @@ void main() {
   String value;
   
 
-  void mockSaveSecureError(){
-    when(secureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
-      .thenThrow(Exception());
-  }
+  
 
 
   setUp((){
@@ -32,6 +27,12 @@ void main() {
      value = faker.guid.guid();
   });
 
+  group('saveSecure', () {
+
+  void mockSaveSecureError() {
+    when(secureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
+      .thenThrow(Exception());
+  }
 
   test('Should call save secure with correct values', () async {
     await sut.saveSecure(key: key, value: value);
@@ -47,5 +48,21 @@ void main() {
 
     expect(future, throwsA(TypeMatcher<Exception>()));
   });
+    
+  });
+
+
+
+  group('fetchSecure', () {
+
+  test('Should call fetch secure with correct value', () async {
+    await sut.fetchSecure(key);
+
+    verify(secureStorage.read(key: key));
+  });
+
+
+  });
+
 
 }
