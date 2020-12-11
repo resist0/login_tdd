@@ -17,9 +17,6 @@ void main() {
   String value;
   
 
-  
-
-
   setUp((){
      secureStorage = FlutterSecureStorageSpy();
      sut = LocalStorageAdapter(secureStorage: secureStorage);
@@ -29,25 +26,25 @@ void main() {
 
   group('saveSecure', () {
 
-  void mockSaveSecureError() {
-    when(secureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
-      .thenThrow(Exception());
-  }
+    void mockSaveSecureError() {
+      when(secureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
+        .thenThrow(Exception());
+    }
 
-  test('Should call save secure with correct values', () async {
-    await sut.saveSecure(key: key, value: value);
+    test('Should call save secure with correct values', () async {
+      await sut.saveSecure(key: key, value: value);
 
-    verify(secureStorage.write(key: key, value: value));
-  });
+      verify(secureStorage.write(key: key, value: value));
+    });
 
 
-  test('Should throw if save secure throws', () async {
-    mockSaveSecureError();
+    test('Should throw if save secure throws', () async {
+      mockSaveSecureError();
 
-    final future = sut.saveSecure(key: key, value: value);
+      final future = sut.saveSecure(key: key, value: value);
 
-    expect(future, throwsA(TypeMatcher<Exception>()));
-  });
+      expect(future, throwsA(TypeMatcher<Exception>()));
+    });
     
   });
 
@@ -55,11 +52,28 @@ void main() {
 
   group('fetchSecure', () {
 
-  test('Should call fetch secure with correct value', () async {
-    await sut.fetchSecure(key);
+    void mockFetchSecure() {
+      when(secureStorage.read(key: anyNamed('key'))).thenAnswer((_) async => value);
+    }
 
-    verify(secureStorage.read(key: key));
-  });
+    setUp((){
+      mockFetchSecure();
+    });
+
+
+
+    test('Should call fetch secure with correct value', () async {
+      await sut.fetchSecure(key);
+
+      verify(secureStorage.read(key: key));
+    });
+
+
+    test('Should return correct value on success', () async {
+      final fetchedValue = await sut.fetchSecure(key);
+
+      expect(fetchedValue, value);
+    });
 
 
   });
