@@ -65,12 +65,12 @@ void main() {
     await tester.pumpWidget(loginPage);
   }
 
-  tearDown((){
-    closeStreams();
-  });
+    tearDown((){
+      closeStreams();
+    });
 
 
-  testWidgets('Should load with correct initial state', (WidgetTester tester) async {
+    testWidgets('Should load with correct initial state', (WidgetTester tester) async {
     await loadPage(tester);
 
     final emailTextChildren = find.descendant(of: find.bySemanticsLabel('Email'), matching: find.byType(Text));
@@ -91,10 +91,10 @@ void main() {
     expect(button.onPressed, null);
     expect(find.byType(CircularProgressIndicator), findsNothing);
 
-  });
+    });
 
 
-  testWidgets('Should call validate with correct values', (WidgetTester tester) async {
+    testWidgets('Should call validate with correct values', (WidgetTester tester) async {
     await loadPage(tester);
 
     final email = faker.internet.email();
@@ -105,20 +105,20 @@ void main() {
     await tester.enterText(find.bySemanticsLabel('Senha'), password);
     verify(presenter.validatePassword(password));
 
-  });
+    });
 
 
-  testWidgets('Should present error if email is invalid', (WidgetTester tester) async {
+    testWidgets('Should present error if email is invalid', (WidgetTester tester) async {
     await loadPage(tester);
 
     emailErrorController.add('any error');
     await tester.pump();
     expect(find.text('any error'), findsOneWidget);
 
-  });
+    });
 
 
-  testWidgets('Should present no error if email is valid', (WidgetTester tester) async {
+    testWidgets('Should present no error if email is valid', (WidgetTester tester) async {
     await loadPage(tester);
 
     emailErrorController.add(null);
@@ -129,7 +129,7 @@ void main() {
       findsOneWidget,
     );
 
-  });
+    });
 
 
     testWidgets('Should present no error if email is valid', (WidgetTester tester) async {
@@ -264,6 +264,20 @@ void main() {
 
     expect(Get.currentRoute, '/any_route');
     expect(find.text('fake page'), findsOneWidget);
+
+    });
+
+
+    testWidgets('Should not change page', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    navigateToController.add('');
+    await tester.pump();
+    expect(Get.currentRoute, '/login');
+
+    navigateToController.add(null);
+    await tester.pump();
+    expect(Get.currentRoute, '/login');
 
     });
 
