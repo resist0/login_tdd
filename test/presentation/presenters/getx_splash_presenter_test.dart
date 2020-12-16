@@ -35,7 +35,7 @@ void main() {
 
 
   test('Should call LoadCurrentAccount', () async {
-  await sut.checkAccount();
+  await sut.checkAccount(durationInSeconds: 0);
 
   verify(loadCurrentAccount.load()).called(1);
   });
@@ -44,7 +44,7 @@ void main() {
   test('Should go to surveys page on success', () async {
   sut.navigateToStream.listen(expectAsync1((page) => expect(page, '/surveys')));
 
-  await sut.checkAccount();
+  await sut.checkAccount(durationInSeconds: 0);
   });
 
 
@@ -52,7 +52,7 @@ void main() {
   mockLoadCurrentAccount(account: null);
   sut.navigateToStream.listen(expectAsync1((page) => expect(page, '/login')));
 
-  await sut.checkAccount();
+  await sut.checkAccount(durationInSeconds: 0);
   });
 
 
@@ -60,7 +60,7 @@ void main() {
   mockLoadCurrentAccountError();
   sut.navigateToStream.listen(expectAsync1((page) => expect(page, '/login')));
 
-  await sut.checkAccount();
+  await sut.checkAccount(durationInSeconds: 0);
   });
 
 
