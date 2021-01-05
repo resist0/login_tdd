@@ -52,8 +52,6 @@ void main() {
     mockSaveCurrentAccountCall().thenThrow(DomainError.unexpected);
   }
 
-  
-
 
   setUp((){
      validation = ValidationSpy();
@@ -172,7 +170,7 @@ void main() {
   });
 
 
-    test('Should call SaveCurrentAccount with correct value', () async {
+  test('Should call SaveCurrentAccount with correct value', () async {
     sut.validateEmail(email);
     sut.validatePassword(password);
 
@@ -182,7 +180,7 @@ void main() {
   });
 
 
-    test('Should emit UnexpectedError if SaveCurrentAccount fails', () async {
+  test('Should emit UnexpectedError if SaveCurrentAccount fails', () async {
     mockSaveCurrentAccountError();
     sut.validateEmail(email);
     sut.validatePassword(password);
