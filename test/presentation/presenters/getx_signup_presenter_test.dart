@@ -18,6 +18,7 @@ void main() {
   String email;
   String name;
   String password;
+  String passwordConfirmation;
 
 
   PostExpectation mockValidationCall(String field) => 
@@ -36,6 +37,7 @@ void main() {
      email = faker.internet.email();
      name = faker.person.name();
      password = faker.internet.password();
+     passwordConfirmation = faker.internet.password();
      mockValidation();
   });
 
@@ -158,4 +160,45 @@ void main() {
     sut.validatePassword(password);
 
   });
+
+
+  test('Should call Validation with correct passwordConfirmation', () {
+    sut.validatePasswordConfirmation(passwordConfirmation);
+
+    verify(validation.validate(field: 'passwordConfirmation', value: passwordConfirmation)).called(1);
+
+  });
+
+
+  test('Should emit invalidFieldError if passwordConfirmation is invalid', () {
+    mockValidation(value: ValidationError.invalidField);  
+
+    sut.passwordConfirmationErrorStream.listen(expectAsync1((error) => expect(error, UIError.invalidField)));
+    sut.isFormValidStream.listen(expectAsync1((isValid) => expect(isValid, false)));
+    sut.validatePasswordConfirmation(passwordConfirmation);
+    sut.validatePasswordConfirmation(passwordConfirmation);
+
+  });
+
+
+  test('Should emit requiredFieldError if passwordConfirmation is empty', () {
+    mockValidation(value: ValidationError.requiredField);  
+
+    sut.passwordConfirmationErrorStream.listen(expectAsync1((error) => expect(error, UIError.requiredField)));
+    sut.isFormValidStream.listen(expectAsync1((isValid) => expect(isValid, false)));
+    sut.validatePasswordConfirmation(passwordConfirmation);
+    sut.validatePasswordConfirmation(passwordConfirmation);
+
+  });
+
+
+  test('Should emit null if validation succeeds', () {
+    sut.passwordConfirmationErrorStream.listen(expectAsync1((error) => expect(error, null)));
+    sut.isFormValidStream.listen(expectAsync1((isValid) => expect(isValid, false)));
+      
+    sut.validatePasswordConfirmation(passwordConfirmation);
+    sut.validatePasswordConfirmation(passwordConfirmation);
+
+  });
+
 }
