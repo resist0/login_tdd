@@ -11,7 +11,7 @@ class CompareFieldsValidation implements FieldValidation {
   CompareFieldsValidation({@required this.field, @required this.valueToCompare});
 
   ValidationError validate(String value) {
-   return ValidationError.invalidField;
+   return value == valueToCompare ? null : ValidationError.invalidField;
   }
 
 }
