@@ -1,4 +1,3 @@
-
 import 'package:get/state_manager.dart';
 import 'package:meta/meta.dart';
 
@@ -11,7 +10,7 @@ import '../../domain/usecases/usecases.dart';
 
 import '../protocols/protocols.dart';
 
-class GetxSignUpPresenter extends GetxController implements SignUpPresenter{
+class GetxSignUpPresenter extends GetxController implements SignUpPresenter {
   final Validation validation;
   final AddAccount addAccount;
   final SaveCurrentAccount saveCurrentAccount;
