@@ -6,6 +6,7 @@ import 'package:test/test.dart';
 
 import 'package:fordev/data/models/models.dart';
 
+import 'package:fordev/domain/helpers/helpers.dart';
 import 'package:fordev/domain/entities/entities.dart';
 
 import 'package:fordev/data/http/http.dart';
@@ -17,10 +18,14 @@ class RemoteLoadSurveys {
   RemoteLoadSurveys({@required this.url, @required this.httpClient});
 
   Future<List<SurveyEntity>> load() async {
-    final httpResponse = await httpClient.request(url: url, method: 'get');
-    return httpResponse
-        .map((json) => RemoteSurveyModel.fromJson(json).toEntity())
-        .toList();
+    try {
+      final httpResponse = await httpClient.request(url: url, method: 'get');
+      return httpResponse
+          .map((json) => RemoteSurveyModel.fromJson(json).toEntity())
+          .toList();
+    } on HttpError {
+      throw DomainError.unexpected;
+    }
   }
 }
 
@@ -46,9 +51,9 @@ void main() {
           'date': faker.date.dateTime().toIso8601String(),
         }
       ];
-      
-  PostExpectation mockRequest() => 
-    when(httpClient.request(url: anyNamed('url'), method: anyNamed('method')));
+
+  PostExpectation mockRequest() => when(
+      httpClient.request(url: anyNamed('url'), method: anyNamed('method')));
 
   void mockHttpData(List<Map> data) {
     list = data;
@@ -68,7 +73,6 @@ void main() {
     verify(httpClient.request(url: url, method: 'get'));
   });
 
-  
   test('Should return surveys on 200', () async {
     final surveys = await sut.load();
 
@@ -87,4 +91,15 @@ void main() {
       )
     ]);
   });
+
+
+  test('Should throw UnexpectedError if HttpClient returns 200 with invalid date', () async {
+    mockHttpData([{'invalid_key': 'invalid_value'}]);
+
+    final future = sut.load();
+
+    expect(future, throwsA(DomainError.unexpected));
+  });
+
+
 }
