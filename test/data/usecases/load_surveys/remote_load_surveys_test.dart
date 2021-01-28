@@ -71,7 +71,7 @@ void main() {
     sut = RemoteLoadSurveys(url: url, httpClient: httpClient);
     mockHttpData(mockValidData());
   });
-  
+
 
   test('Should call HttpClient with correct values', () async {
     await sut.load();
@@ -110,6 +110,15 @@ void main() {
 
   test('Should throw UnexpectedError if HttpClient returns 404', () async {
     mockHttpError(HttpError.notFound);
+
+    final future = sut.load();
+
+    expect(future, throwsA(DomainError.unexpected));
+  });
+
+
+  test('Should throw UnexpectedError if HttpClient returns 500', () async {
+    mockHttpError(HttpError.serverError);
 
     final future = sut.load();
 
