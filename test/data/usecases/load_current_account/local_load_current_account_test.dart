@@ -34,6 +34,7 @@ void main() {
     mockFetchSecure();
   });
 
+
   test('Should call FetchSecureCacheStorage with correct value', () async {
     await sut.load();
 

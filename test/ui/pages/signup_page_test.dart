@@ -343,4 +343,5 @@ void main() {
     verify(presenter.goToLogin()).called(1);
 
   });
+
 }

@@ -28,6 +28,7 @@ AccountEntity account;
      account = AccountEntity(token: faker.guid.guid());
   });
 
+
   test('Should call SaveSecureCacheStorage with correct values', () async {
     await sut.save(account);
 

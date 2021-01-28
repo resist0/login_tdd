@@ -80,9 +80,7 @@ void main() {
   });
 
 
-  test(
-      'Should throw UnexpectedError if HttpClient returns 200 with invalid date',
-      () async {
+  test('Should throw UnexpectedError if HttpClient returns 200 with invalid date', () async {
     mockHttpData([
       {'invalid_key': 'invalid_value'}
     ]);
@@ -118,4 +116,5 @@ void main() {
 
     expect(future, throwsA(DomainError.accessDenied));
   });
+
 }

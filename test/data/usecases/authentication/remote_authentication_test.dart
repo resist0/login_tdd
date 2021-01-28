@@ -32,7 +32,7 @@ void main() {
     mockRequest().thenThrow(error);
   }
 
-  // FUNÇÕES EXECUTADAS ANTES DO TESTE
+
   setUp(() {
     httpClient = HttpClientSpy();
     url = faker.internet.httpUrl();
@@ -44,7 +44,7 @@ void main() {
     mockHttpData(mockValidData());
   });
 
-  // TESTES
+
   test('Should call HttpClient with correct values', () async {
     await sut.auth(params);
 
@@ -78,8 +78,7 @@ void main() {
     expect(future, throwsA(DomainError.unexpected));
   });
 
-  test('Should throw InvalidCredentialsError if HttpClient returns 401',
-      () async {
+  test('Should throw InvalidCredentialsError if HttpClient returns 401', () async {
     mockHttpError(HttpError.unauthorized);
 
     final future = sut.auth(params);
@@ -96,9 +95,7 @@ void main() {
     expect(account.token, validData['accessToken']);
   });
 
-  test(
-      'Should throw UnexpectedError if HttpClient returns 200 with invalid data',
-      () async {
+  test('Should throw UnexpectedError if HttpClient returns 200 with invalid data', () async {
     mockHttpData({'invalid_key': 'invalid_value'});
 
     final future = sut.auth(params);

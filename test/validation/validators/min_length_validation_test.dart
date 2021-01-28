@@ -15,6 +15,7 @@ void main() {
     sut = MinLengthValidation(field: 'any_field', size: 5);
   });
 
+
   test('Should return error if value is empty', () {
     final error = sut.validate({'any_field': ''});
     expect(error, ValidationError.invalidField);
@@ -48,6 +49,5 @@ void main() {
     expect(error, null);
 
   });
-
 
 }

@@ -71,5 +71,4 @@ void main() {
     await sut.checkAccount(durationInSeconds: 0);
   });
 
-
 }

@@ -91,8 +91,7 @@ void main() {
   });
 
 
-  test('Should throw InvalidCredentialsError if HttpClient returns 401',
-      () async {
+  test('Should throw InvalidCredentialsError if HttpClient returns 401', () async {
     mockHttpError(HttpError.forbidden);
 
     final future = sut.add(params);
@@ -111,9 +110,7 @@ void main() {
   });
 
 
-  test(
-      'Should throw UnexpectedError if HttpClient returns 200 with invalid data',
-      () async {
+  test('Should throw UnexpectedError if HttpClient returns 200 with invalid data', () async {
     mockHttpData({'invalid_key': 'invalid_value'});
 
     final future = sut.add(params);

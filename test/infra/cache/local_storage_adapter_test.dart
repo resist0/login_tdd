@@ -49,7 +49,6 @@ void main() {
   });
 
 
-
   group('fetchSecure', () {
 
     PostExpectation mockFetchSecureCall() => 
@@ -91,8 +90,6 @@ void main() {
       expect(future, throwsA(TypeMatcher<Exception>()));
     });
 
-
   });
-
 
 }
