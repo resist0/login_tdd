@@ -1,35 +1,13 @@
 import 'package:faker/faker.dart';
-
-import 'package:meta/meta.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
-
-import 'package:fordev/data/models/models.dart';
 
 import 'package:fordev/domain/helpers/helpers.dart';
 import 'package:fordev/domain/entities/entities.dart';
 
 import 'package:fordev/data/http/http.dart';
+import 'package:fordev/data/usecases/usecases.dart';
 
-class RemoteLoadSurveys {
-  final String url;
-  final HttpClient<List<Map>> httpClient;
-
-  RemoteLoadSurveys({@required this.url, @required this.httpClient});
-
-  Future<List<SurveyEntity>> load() async {
-    try {
-      final httpResponse = await httpClient.request(url: url, method: 'get');
-      return httpResponse
-          .map((json) => RemoteSurveyModel.fromJson(json).toEntity())
-          .toList();
-    } on HttpError catch(error) {
-      throw error == HttpError.forbidden
-        ? DomainError.accessDenied
-        : DomainError.unexpected;
-    }
-  }
-}
 
 class HttpClientSpy extends Mock implements HttpClient<List<Map>> {}
 
@@ -81,6 +59,7 @@ void main() {
     verify(httpClient.request(url: url, method: 'get'));
   });
 
+
   test('Should return surveys on 200', () async {
     final surveys = await sut.load();
 
@@ -101,8 +80,12 @@ void main() {
   });
 
 
-  test('Should throw UnexpectedError if HttpClient returns 200 with invalid date', () async {
-    mockHttpData([{'invalid_key': 'invalid_value'}]);
+  test(
+      'Should throw UnexpectedError if HttpClient returns 200 with invalid date',
+      () async {
+    mockHttpData([
+      {'invalid_key': 'invalid_value'}
+    ]);
 
     final future = sut.load();
 
@@ -135,6 +118,4 @@ void main() {
 
     expect(future, throwsA(DomainError.accessDenied));
   });
-
-
 }
