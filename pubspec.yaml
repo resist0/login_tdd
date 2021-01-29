@@ -18,6 +18,7 @@ dependencies:
   equatable: 
   get: 
   flutter_secure_storage:
+  carousel_slider:
 
 
 dev_dependencies:
