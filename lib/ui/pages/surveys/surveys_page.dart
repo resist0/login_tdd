@@ -22,6 +22,7 @@ class SurveysPage extends StatelessWidget {
       appBar: AppBar(title: Text(R.string.surveys), centerTitle: true),
       body: Builder(
         builder: (context) {
+
           presenter.isLoadingStream.listen((isLoading) {
             if (isLoading == true) {
               showLoading(context);
@@ -38,7 +39,7 @@ class SurveysPage extends StatelessWidget {
                     children: <Widget>[
                       Text(snapshot.error),
                       RaisedButton(
-                        onPressed: null,
+                        onPressed: presenter.loadData,
                         child: Text(
                           R.string.reload,
                         ),
