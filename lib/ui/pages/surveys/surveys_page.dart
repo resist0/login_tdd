@@ -6,6 +6,7 @@ import 'components/components.dart';
 
 import '../../helpers/helpers.dart';
 
+import 'survey_viewmodel.dart';
 import 'surveys_presenter.dart';
 
 class SurveysPage extends StatelessWidget {
@@ -21,7 +22,6 @@ class SurveysPage extends StatelessWidget {
       appBar: AppBar(title: Text(R.string.surveys), centerTitle: true),
       body: Builder(
         builder: (context) {
-
           presenter.isLoadingStream.listen((isLoading) {
             if (isLoading == true) {
               showLoading(context);
@@ -30,20 +30,37 @@ class SurveysPage extends StatelessWidget {
             }
           });
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: CarouselSlider(
-              options: CarouselOptions(
-                enlargeCenterPage: true,
-                aspectRatio: 1,
-              ),
-              items: [
-                SurveyItem(),
-                SurveyItem(),
-                SurveyItem(),
-              ],
-            ),
-          );
+          return StreamBuilder<List<SurveyViewModel>>(
+              stream: presenter.loadSurveysStream,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Column(
+                    children: <Widget>[
+                      Text(snapshot.error),
+                      RaisedButton(
+                        onPressed: null,
+                        child: Text(
+                          R.string.reload,
+                        ),
+                      ),
+                    ],
+                  );
+                }
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      enlargeCenterPage: true,
+                      aspectRatio: 1,
+                    ),
+                    items: [
+                      SurveyItem(),
+                      SurveyItem(),
+                      SurveyItem(),
+                    ],
+                  ),
+                );
+              });
         },
       ),
     );
