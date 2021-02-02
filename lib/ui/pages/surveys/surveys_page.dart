@@ -46,7 +46,7 @@ class SurveysPage extends StatelessWidget {
                       ),
                     ],
                   );
-                }
+                } 
                 if (snapshot.hasData) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),

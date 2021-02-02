@@ -8,7 +8,7 @@ import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 
-class GetxSurveysPresenter {
+class GetxSurveysPresenter implements SurveysPresenter {
   final LoadSurveys loadSurveys;
 
   final _isLoading = true.obs;
@@ -33,6 +33,7 @@ class GetxSurveysPresenter {
           .toList();
     } on DomainError {
       _surveys.subject.addError(UIError.unexpected.description);
+      
     } finally {
       _isLoading.value = false;
     }
