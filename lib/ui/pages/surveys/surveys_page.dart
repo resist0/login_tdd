@@ -22,7 +22,6 @@ class SurveysPage extends StatelessWidget {
       appBar: AppBar(title: Text(R.string.surveys), centerTitle: true),
       body: Builder(
         builder: (context) {
-
           presenter.isLoadingStream.listen((isLoading) {
             if (isLoading == true) {
               showLoading(context);
@@ -35,18 +34,27 @@ class SurveysPage extends StatelessWidget {
               stream: presenter.surveysStream,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return Column(
-                    children: <Widget>[
-                      Text(snapshot.error),
-                      RaisedButton(
-                        onPressed: presenter.loadData,
-                        child: Text(
-                          R.string.reload,
+                  return Padding(
+                    padding: const EdgeInsets.all(60),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          snapshot.error,
+                          style: TextStyle(fontSize: 16),
+                          textAlign: TextAlign.center,
                         ),
-                      ),
-                    ],
+                        SizedBox(height: 10),
+                        RaisedButton(
+                          onPressed: presenter.loadData,
+                          child: Text(
+                            R.string.reload,
+                          ),
+                        ),
+                      ],
+                    ),
                   );
-                } 
+                }
                 if (snapshot.hasData) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),
