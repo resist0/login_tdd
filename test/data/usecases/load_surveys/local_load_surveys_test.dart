@@ -161,13 +161,11 @@ void main() {
       mockFetch(mockValidData());
     });
 
-
     test('Should call FetchCacheStorage with correct key', () async {
       await sut.validate();
 
       verify(cacheStorage.fetch('surveys')).called(1);
     });
-
 
     test('Should delete cache if it is invalid', () async {
       mockFetch([
@@ -184,14 +182,8 @@ void main() {
       verify(cacheStorage.delete('surveys')).called(1);
     });
 
-
     test('Should delete cache if it is incomplete', () async {
-      mockFetch([
-        {
-          'date': '2019-02-02T00:00:00Z',
-          'didAnswer': 'false',
-        }
-      ]);
+      mockFetchError();
 
       await sut.validate();
 

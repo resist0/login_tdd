@@ -25,8 +25,8 @@ class LocalLoadSurveys implements LoadSurveys {
   }
 
   Future<void> validate() async {
-    final data = await cacheStorage.fetch('surveys');
     try {
+      final data = await cacheStorage.fetch('surveys');
       return _map(data);
     } catch (error) {
       cacheStorage.delete('surveys');
