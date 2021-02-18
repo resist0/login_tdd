@@ -54,7 +54,6 @@ void main() {
       verify(cacheStorage.fetch('surveys')).called(1);
     });
 
-
     test('Should return a list of surveys on success', () async {
       final surveys = await sut.load();
 
@@ -72,7 +71,6 @@ void main() {
       ]);
     });
 
-
     test('Should throw UnexpectedError if cache is empty', () async {
       mockFetch([]);
 
@@ -81,7 +79,6 @@ void main() {
       expect(future, throwsA(DomainError.unexpected));
     });
 
-
     test('Should throw UnexpectedError if cache is empty', () async {
       mockFetch(null);
 
@@ -89,7 +86,6 @@ void main() {
 
       expect(future, throwsA(DomainError.unexpected));
     });
-
 
     test('Should throw UnexpectedError if cache is invalid', () async {
       mockFetch([
@@ -106,7 +102,6 @@ void main() {
       expect(future, throwsA(DomainError.unexpected));
     });
 
-
     test('Should throw UnexpectedError if cache is incomplete', () async {
       mockFetch([
         {
@@ -119,7 +114,6 @@ void main() {
 
       expect(future, throwsA(DomainError.unexpected));
     });
-
 
     test('Should throw UnexpectedError if cache is incomplete', () async {
       mockFetchError();
@@ -173,6 +167,19 @@ void main() {
       verify(cacheStorage.fetch('surveys')).called(1);
     });
 
+    test('Should delete cache if it is invalid', () async {
+      mockFetch([
+        {
+          'id': faker.guid.guid(),
+          'question': faker.randomGenerator.string(10),
+          'date': 'invalid date',
+          'didAnswer': 'false',
+        }
+      ]);
 
+      await sut.validate();
+
+      verify(cacheStorage.delete('surveys')).called(1);
+    });
   });
 }
