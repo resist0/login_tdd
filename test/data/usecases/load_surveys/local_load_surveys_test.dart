@@ -48,7 +48,7 @@ void main() {
       mockFetch(mockValidData());
     });
 
-    test('Should call FetchCacheStorage with correct key', () async {
+    test('Should call cacheStorage with correct key', () async {
       await sut.load();
 
       verify(cacheStorage.fetch('surveys')).called(1);
@@ -124,7 +124,7 @@ void main() {
     });
   });
 
-  group('load', () {
+  group('validate', () {
     CacheStorageSpy cacheStorage;
     LocalLoadSurveys sut;
     List<Map> data;
@@ -161,7 +161,7 @@ void main() {
       mockFetch(mockValidData());
     });
 
-    test('Should call FetchCacheStorage with correct key', () async {
+    test('Should call cacheStorage with correct key', () async {
       await sut.validate();
 
       verify(cacheStorage.fetch('surveys')).called(1);
@@ -188,6 +188,53 @@ void main() {
       await sut.validate();
 
       verify(cacheStorage.delete('surveys')).called(1);
+    });
+  });
+
+  group('save', () {
+    CacheStorageSpy cacheStorage;
+    LocalLoadSurveys sut;
+    List<SurveyEntity> surveys;
+
+    List<SurveyEntity> mockSurveys() => [
+          SurveyEntity(
+            id: faker.guid.guid(),
+            question: faker.randomGenerator.string(10),
+            dateTime: DateTime.utc(2020, 2, 2),
+            didAnswer: true,
+          ),
+          SurveyEntity(
+            id: faker.guid.guid(),
+            question: faker.randomGenerator.string(10),
+            dateTime: DateTime.utc(2018, 12, 20),
+            didAnswer: false,
+          ),
+        ];
+
+    setUp(() {
+      cacheStorage = CacheStorageSpy();
+      sut = LocalLoadSurveys(cacheStorage: cacheStorage);
+      surveys = mockSurveys();
+    });
+
+    test('Should call cacheStorage with correct values', () async {
+      final list = [
+        {
+          'id': surveys[0].id,
+          'question': surveys[0].question,
+          'date': '2020-02-02T00:00:00.000Z',
+          'didAnswer': 'true',
+        },
+        {
+          'id': surveys[1].id,
+          'question': surveys[1].question,
+          'date': '2018-12-20T00:00:00.000Z',
+          'didAnswer': 'false',
+        }
+      ];
+      await sut.save(surveys);
+
+      verify(cacheStorage.save(key: 'surveys', value: list)).called(1);
     });
   });
 }
