@@ -1,6 +1,5 @@
 import 'package:meta/meta.dart';
 
-import '../http/http.dart';
 import '../../domain/entities/entities.dart';
 
 class LocalSurveyModel {
@@ -18,7 +17,7 @@ class LocalSurveyModel {
 
   factory LocalSurveyModel.fromJson(Map json) {
     if(!json.keys.toSet().containsAll(['id', 'question', 'date', 'didAnswer'])){
-      throw HttpError.invalidData;
+      throw Exception();
     }
     return LocalSurveyModel(
       id: json['id'],
