@@ -2,11 +2,12 @@ import 'package:meta/meta.dart';
 
 import '../../../domain/entities/entities.dart';
 import '../../../domain/helpers/helpers.dart';
+import '../../../domain/usecases/usecases.dart';
 
 import '../../models/models.dart';
 import '../../cache/cache.dart';
 
-class LocalLoadSurveys {
+class LocalLoadSurveys implements LoadSurveys {
   final FetchCacheStorage fetchCacheStorage;
 
   LocalLoadSurveys({@required this.fetchCacheStorage});
