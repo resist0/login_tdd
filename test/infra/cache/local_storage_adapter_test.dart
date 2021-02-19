@@ -10,6 +10,7 @@ class LocalStorageAdapter {
   LocalStorageAdapter({@required this.localStorage});
 
   Future<void> save({@required String key, @required dynamic value}) async {
+    await localStorage.deleteItem(key);
     await localStorage.setItem(key, value);
   }
 }
@@ -17,10 +18,10 @@ class LocalStorageAdapter {
 class LocalStorageSpy extends Mock implements LocalStorage {}
 
 void main() {
-  String key;
-  String value;
-  LocalStorageSpy localStorage;
   LocalStorageAdapter sut;
+  LocalStorageSpy localStorage;
+  String key;
+  dynamic value;
 
   setUp(() {
     key = faker.randomGenerator.string(5);
@@ -32,6 +33,7 @@ void main() {
   test('Should call localStorage with correct values', () async {
     await sut.save(key: key, value: value);
 
+    verify(localStorage.deleteItem(key)).called(1);
     verify(localStorage.setItem(key, value)).called(1);
   });
 }
