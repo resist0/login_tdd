@@ -5,9 +5,7 @@ import 'package:test/test.dart';
 
 import 'package:fordev/infra/cache/cache.dart';
 
-
 class FlutterSecureStorageSpy extends Mock implements FlutterSecureStorage {}
-
 
 void main() {
 
