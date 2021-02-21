@@ -10,7 +10,7 @@ class HttpAdapter implements HttpClient {
 
   HttpAdapter(this.client);
 
-  Future<dynamic> request({@required String url, @required String method, Map body, Map headers}) async {
+  Future<dynamic> request({@required String url, @required String method, Map body, Map headers,}) async {
     
     final defaultHeaders = headers?.cast<String, String>() ?? {}..addAll({
       'content-type': 'application/json ',
@@ -23,9 +23,9 @@ class HttpAdapter implements HttpClient {
 
     try {
       if (method == 'post') {
-        response = await client.post(url, headers: defaultHeaders, body: jsonBody);
+        response = await client.post(url, headers: defaultHeaders, body: jsonBody).timeout(Duration(seconds: 10));
       } else if (method == 'get') {
-        response = await client.get(url, headers: defaultHeaders);
+        response = await client.get(url, headers: defaultHeaders).timeout(Duration(seconds: 10));
       }
     } catch (error) {
       throw HttpError.serverError;
