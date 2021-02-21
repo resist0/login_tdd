@@ -4,10 +4,9 @@ import 'package:test/test.dart';
 import 'package:fordev/presentation/protocols/protocols.dart';
 
 import 'package:fordev/validation/protocols/protocols.dart';
-import 'package:fordev/validation/validators/validators.dart';
+import 'package:fordev/main/composites/composites.dart';
 
 class FieldValidationSpy extends Mock implements FieldValidation {}
-
 
 void main() {
   ValidationComposite sut;
@@ -27,7 +26,7 @@ void main() {
     when(validation3.validate(any)).thenReturn(error);
   }
 
-  setUp((){
+  setUp(() {
     validation1 = FieldValidationSpy();
     when(validation1.field).thenReturn('other_field');
     mockValidation1(null);
@@ -43,13 +42,11 @@ void main() {
     sut = ValidationComposite([validation1, validation2, validation3]);
   });
 
-
   test('Should return null if all validations returns null or empty', () {
     final error = sut.validate(field: 'any_field', input: {});
 
     expect(error, null);
   });
-
 
   test('Should return the first error', () {
     mockValidation1(ValidationError.requiredField);
@@ -60,5 +57,4 @@ void main() {
 
     expect(error, ValidationError.requiredField);
   });
-
 }
