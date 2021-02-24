@@ -1,11 +1,10 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/components.dart';
-import 'components/components.dart';
 
 import '../../helpers/helpers.dart';
 
+import 'components/components.dart';
 import 'survey_viewmodel.dart';
 import 'surveys_presenter.dart';
 
@@ -40,18 +39,7 @@ class SurveysPage extends StatelessWidget {
                   );
                 }
                 if (snapshot.hasData) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: CarouselSlider(
-                      options: CarouselOptions(
-                        enlargeCenterPage: true,
-                        aspectRatio: 1,
-                      ),
-                      items: snapshot.data
-                          .map((viewModel) => SurveyItem(viewModel))
-                          .toList(),
-                    ),
-                  );
+                  return SurveyItems(snapshot.data);
                 }
                 return SizedBox(height: 0);
               });
