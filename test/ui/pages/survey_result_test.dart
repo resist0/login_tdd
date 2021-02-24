@@ -48,24 +48,11 @@ void main() {
     });
   }
 
-  List<SurveyViewModel> makeSurveys() => [
-        SurveyViewModel(
-          id: '1',
-          question: 'Question 1',
-          date: 'Date 1',
-          didAnswer: true,
-        ),
-        SurveyViewModel(
-          id: '2',
-          question: 'Question 2',
-          date: 'Date 2',
-          didAnswer: false,
-        ),
-      ];
 
   tearDown(() {
     closeStreams();
   });
+  
 
   testWidgets('Should call LoadSurveyResult on page load', (WidgetTester tester) async {
     await loadPage(tester);
@@ -103,4 +90,16 @@ void main() {
     expect(find.text('Recarregar'), findsOneWidget);
 
   });
+
+
+  testWidgets('Should call LoadSurveyResult on reload button click', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    surveyResultController.addError(UIError.unexpected.description);
+    await tester.pump();
+    await tester.tap(find.text('Recarregar'));
+    
+    verify(presenter.loadData()).called(2);
+  });
+
 }
