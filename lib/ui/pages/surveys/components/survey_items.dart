@@ -6,6 +6,7 @@ import './components.dart';
 
 class SurveyItems extends StatelessWidget {
   final List<SurveyViewModel> viewModels;
+
   SurveyItems(this.viewModels);
 
   @override

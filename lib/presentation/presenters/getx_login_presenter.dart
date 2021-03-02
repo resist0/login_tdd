@@ -14,13 +14,12 @@ class GetxLoginPresenter extends GetxController implements LoginPresenter {
   final Authentication authentication;
   final SaveCurrentAccount saveCurrentAccount;
 
-
-  var _emailError = Rx<UIError>();
-  var _passwordError = Rx<UIError>();
-  var _mainError = Rx<UIError>();
-  var _navigateTo = RxString();
-  var _isFormValid = false.obs;
-  var _isLoading = false.obs;
+  final _emailError = Rx<UIError>();
+  final _passwordError = Rx<UIError>();
+  final _mainError = Rx<UIError>();
+  final _navigateTo = RxString();
+  final _isFormValid = false.obs;
+  final _isLoading = false.obs;
 
   String _email;
   String _password;
@@ -33,10 +32,10 @@ class GetxLoginPresenter extends GetxController implements LoginPresenter {
   Stream<bool> get isLoadingStream => _isLoading.stream;
 
   GetxLoginPresenter({
-    @required this.validation, 
-    @required this.authentication, 
+    @required this.validation,
+    @required this.authentication,
     @required this.saveCurrentAccount,
-    });
+  });
 
   void validateEmail(String email) {
     _email = email;
@@ -50,7 +49,7 @@ class GetxLoginPresenter extends GetxController implements LoginPresenter {
     _validateForm();
   }
 
-  UIError _validateField(String field){
+  UIError _validateField(String field) {
     final formData = {
       'email': _email,
       'password': _password,
@@ -61,29 +60,32 @@ class GetxLoginPresenter extends GetxController implements LoginPresenter {
         return UIError.invalidField;
       case ValidationError.requiredField:
         return UIError.requiredField;
-      default: 
+      default:
         return null;
     }
   }
 
   void _validateForm() {
-    _isFormValid.value = _emailError.value == null 
-    && _passwordError.value == null 
-    && _email != null 
-    && _password != null;
+    _isFormValid.value = _emailError.value == null &&
+        _passwordError.value == null &&
+        _email != null &&
+        _password != null;
   }
 
   Future<void> auth() async {
     try {
       _isLoading.value = true;
-      final account = await authentication.auth(AuthenticationParams(email: _email, secret: _password));
+      final account = await authentication
+          .auth(AuthenticationParams(email: _email, secret: _password));
       await saveCurrentAccount.save(account);
       _navigateTo.value = '/surveys';
     } on DomainError catch (error) {
       switch (error) {
         case DomainError.invalidCredentials:
-          _mainError.value = UIError.invalidCredentials; break;
-        default: _mainError.value = UIError.unexpected; 
+          _mainError.value = UIError.invalidCredentials;
+          break;
+        default:
+          _mainError.value = UIError.unexpected;
       }
       _isLoading.value = false;
     }
@@ -92,5 +94,4 @@ class GetxLoginPresenter extends GetxController implements LoginPresenter {
   void goToSignUp() {
     _navigateTo.value = '/signup';
   }
-
 }
