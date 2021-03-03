@@ -13,21 +13,27 @@ class SurveyResultPresenterSpy extends Mock implements SurveyResultPresenter {}
 void main() {
   SurveyResultPresenterSpy presenter;
   StreamController<bool> isLoadingController;
+  StreamController<bool> isSessionExpiredController;
   StreamController<SurveyResultViewModel> surveyResultController;
 
   void initStreams() {
     isLoadingController = StreamController<bool>();
+    isSessionExpiredController = StreamController<bool>();
+    isSessionExpiredController = StreamController<bool>();
     surveyResultController = StreamController<SurveyResultViewModel>();
   }
 
   void mockStreams() {
      when(presenter.isLoadingStream).thenAnswer((_) => isLoadingController.stream); 
-      when(presenter.surveyResultStream).thenAnswer((_) => surveyResultController.stream);
+     when(presenter.isSessionExpiredStream).thenAnswer((_) => isSessionExpiredController.stream);
+     when(presenter.surveyResultStream).thenAnswer((_) => surveyResultController.stream);
   }
 
   void closeStreams() {
     isLoadingController.close();
+    isSessionExpiredController.close();
     surveyResultController.close();
+    
   }
 
   Future<void> loadPage(WidgetTester tester) async {
@@ -41,6 +47,7 @@ void main() {
           name: '/survey_result/:survey_id',
           page: () => SurveyResultPage(presenter),
         ),
+        GetPage(name: '/login', page: () => Scaffold(body: Text('fake login'))),
       ],
     );
     await provideMockedNetworkImages(() async {
@@ -100,6 +107,32 @@ void main() {
     await tester.tap(find.text('Recarregar'));
     
     verify(presenter.loadData()).called(2);
+  });
+
+
+  testWidgets('Should logout', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    isSessionExpiredController.add(true);
+    await tester.pumpAndSettle();
+
+    expect(Get.currentRoute, '/login');
+    expect(find.text('fake login'), findsOneWidget);
+
+  });
+
+
+  testWidgets('Should not logout', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    isSessionExpiredController.add(false);
+    await tester.pumpAndSettle();
+    expect(Get.currentRoute, '/survey_result/any_survey_id');
+
+    isSessionExpiredController.add(null);
+    await tester.pumpAndSettle();
+    expect(Get.currentRoute, '/survey_result/any_survey_id');
+
   });
 
 }
