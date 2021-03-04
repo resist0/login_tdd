@@ -21,7 +21,7 @@ class ReloadScreen extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 10),
-          RaisedButton(
+          ElevatedButton(
             onPressed: reload,
             child: Text(
               R.string.reload,

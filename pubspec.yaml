@@ -16,7 +16,7 @@ dependencies:
   http:
   provider:
   equatable: 
-  get: 3.4.2
+  get:
   flutter_secure_storage:
   localstorage:
   carousel_slider:
