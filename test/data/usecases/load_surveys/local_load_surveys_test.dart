@@ -183,6 +183,19 @@ void main() {
     });
 
     test('Should delete cache if it is incomplete', () async {
+      mockFetch([
+        {
+          'id': faker.guid.guid(),
+          'question': faker.randomGenerator.string(10),
+        }
+      ]);
+
+      await sut.validate();
+
+      verify(cacheStorage.delete('surveys')).called(1);
+    });
+
+    test('Should delete cache if fetch fails', () async {
       mockFetchError();
 
       await sut.validate();
@@ -250,5 +263,4 @@ void main() {
       expect(future, throwsA(DomainError.unexpected));
     });
   });
-
 }
