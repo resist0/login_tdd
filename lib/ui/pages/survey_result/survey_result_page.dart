@@ -8,8 +8,7 @@ import 'components/components.dart';
 
 import './survey_result.dart';
 
-class SurveyResultPage extends StatelessWidget
-    with LoadingManager, SessionManager {
+class SurveyResultPage extends StatelessWidget with LoadingManager, SessionManager {
   final SurveyResultPresenter presenter;
 
   SurveyResultPage(this.presenter);
@@ -38,7 +37,7 @@ class SurveyResultPage extends StatelessWidget
                 );
               }
               if (snapshot.hasData) {
-                return SurveyResult(viewModel: snapshot.data);
+                return SurveyResult(viewModel: snapshot.data, onSave: presenter.save);
               }
               return SizedBox(height: 0);
             },

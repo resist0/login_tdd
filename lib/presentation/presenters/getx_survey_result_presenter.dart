@@ -9,7 +9,7 @@ import '../../ui/pages/pages.dart';
 
 import '../mixins/mixins.dart';
 
-class GetxSurveyResultPresenter with SessionManager, LoadingManager implements SurveyResultPresenter {
+class GetxSurveyResultPresenter extends GetxController with SessionManager, LoadingManager implements SurveyResultPresenter {
   final LoadSurveyResult loadSurveyResult;
   final String surveyId;
   
@@ -50,4 +50,6 @@ class GetxSurveyResultPresenter with SessionManager, LoadingManager implements S
       isLoading = false;
     }
   }
+
+  Future<void> save({@required String answer}) async {}
 }
