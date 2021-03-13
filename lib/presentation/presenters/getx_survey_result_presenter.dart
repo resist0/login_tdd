@@ -11,6 +11,7 @@ import '../mixins/mixins.dart';
 
 class GetxSurveyResultPresenter extends GetxController with SessionManager, LoadingManager implements SurveyResultPresenter {
   final LoadSurveyResult loadSurveyResult;
+  final SaveSurveyResult saveSurveyResult;
   final String surveyId;
   
   final _surveyResult = Rx<SurveyResultViewModel>();
@@ -20,14 +21,14 @@ class GetxSurveyResultPresenter extends GetxController with SessionManager, Load
 
   GetxSurveyResultPresenter({
     @required this.loadSurveyResult,
+    @required this.saveSurveyResult,
     @required this.surveyId,
   });
 
   Future<void> loadData() async {
     try {
       isLoading = true;
-      final surveyResult =
-          await loadSurveyResult.loadBySurvey(surveyId: surveyId);
+      final surveyResult = await loadSurveyResult.loadBySurvey(surveyId: surveyId);
       _surveyResult.value = SurveyResultViewModel(
         surveyId: surveyResult.surveyId,
         question: surveyResult.question,
@@ -51,5 +52,7 @@ class GetxSurveyResultPresenter extends GetxController with SessionManager, Load
     }
   }
 
-  Future<void> save({@required String answer}) async {}
+  Future<void> save({@required String answer}) async {
+    await saveSurveyResult.save(answer: answer);
+  }
 }
