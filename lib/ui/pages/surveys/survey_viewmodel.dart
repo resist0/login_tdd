@@ -13,6 +13,6 @@ class SurveyViewModel extends Equatable {
     @required this.id,
     @required this.question,
     @required this.date,
-    @required this.didAnswer,
+    @required this.didAnswer
   });
 }

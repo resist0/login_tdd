@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class LoginHeader extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -13,24 +12,20 @@ class LoginHeader extends StatelessWidget {
           end: Alignment.bottomLeft,
           colors: [
             Theme.of(context).primaryColorLight,
-            Theme.of(context).primaryColorDark,
-          ],
+            Theme.of(context).primaryColorDark
+          ]
         ),
         boxShadow: [
           BoxShadow(
             offset: Offset(0, 0),
             spreadRadius: 0,
             blurRadius: 4,
-            color: Colors.black,
-          ),
+            color: Colors.black
+          )
         ],
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(80),
-        ),
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80))
       ),
-      child: Image(
-        image: AssetImage('lib/ui/assets/logo.png'),
-      ),
+      child: Image(image: AssetImage('lib/ui/assets/logo.png')),
     );
   }
 }

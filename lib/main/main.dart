@@ -7,11 +7,8 @@ import '../ui/components/components.dart';
 import 'factories/factories.dart';
 
 void main() {
-  
   Provider.debugCheckInvalidValueType = null;
-  //R.load(Locale('en', 'US'));
   runApp(App());
-  
 }
 
 class App extends StatelessWidget {
@@ -26,11 +23,15 @@ class App extends StatelessWidget {
       initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: makeSplashPage, transition: Transition.fade),
-        GetPage(name: '/login', page: makeLoginPage, transition: Transition.fadeIn),
+        GetPage(
+            name: '/login', page: makeLoginPage, transition: Transition.fadeIn),
         GetPage(name: '/signup', page: makeSignUpPage),
-        GetPage(name: '/surveys', page: makeSurveysPage, transition: Transition.fadeIn),
+        GetPage(
+            name: '/surveys',
+            page: makeSurveysPage,
+            transition: Transition.fadeIn),
         GetPage(name: '/survey_result/:survey_id', page: makeSurveyResultPage),
-        ],
+      ],
     );
   }
 }

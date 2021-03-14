@@ -2,11 +2,12 @@ import 'package:faker/faker.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'package:fordev/domain/helpers/helpers.dart';
-import 'package:fordev/domain/usecases/authentication.dart';
+import '../../../../lib/data/http/http.dart';
+import '../../../../lib/data/usecases/usecases.dart';
+import '../../../../lib/domain/helpers/helpers.dart';
+import '../../../../lib/domain/usecases/usecases.dart';
 
-import 'package:fordev/data/usecases/usecases.dart';
-import 'package:fordev/data/http/http.dart';
+
 
 class HttpClientSpy extends Mock implements HttpClient {}
 
@@ -16,42 +17,34 @@ void main() {
   String url;
   AuthenticationParams params;
 
-  Map mockValidData() =>
-      {'accessToken': faker.guid.guid(), 'name': faker.person.name()};
+  Map mockValidData() => {'accessToken': faker.guid.guid(), 'name': faker.person.name()};
 
   PostExpectation mockRequest() => when(httpClient.request(
-      url: anyNamed('url'),
-      method: anyNamed('method'),
-      body: anyNamed('body')));
+    url: anyNamed('url'),
+    method: anyNamed('method'),
+    body: anyNamed('body')
+  ));
 
-  void mockHttpData(Map data) {
-    mockRequest().thenAnswer((_) async => data);
-  }
+  void mockHttpData(Map data) => mockRequest().thenAnswer((_) async => data);
 
-  void mockHttpError(HttpError error) {
-    mockRequest().thenThrow(error);
-  }
-
+  void mockHttpError(HttpError error) => mockRequest().thenThrow(error);
 
   setUp(() {
     httpClient = HttpClientSpy();
     url = faker.internet.httpUrl();
     sut = RemoteAuthentication(httpClient: httpClient, url: url);
-    params = AuthenticationParams(
-      email: faker.internet.email(),
-      secret: faker.internet.password(),
-    );
+    params = AuthenticationParams(email: faker.internet.email(), secret: faker.internet.password());
     mockHttpData(mockValidData());
   });
-
 
   test('Should call HttpClient with correct values', () async {
     await sut.auth(params);
 
     verify(httpClient.request(
-        url: url,
-        method: 'post',
-        body: {'email': params.email, 'password': params.secret}));
+      url: url,
+      method: 'post',
+      body: {'email': params.email, 'password': params.secret}
+    ));
   });
 
   test('Should throw UnexpectedError if HttpClient returns 400', () async {

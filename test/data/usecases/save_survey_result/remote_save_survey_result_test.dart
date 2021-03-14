@@ -1,13 +1,13 @@
 import 'package:faker/faker.dart';
-
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'package:fordev/domain/helpers/helpers.dart';
-import 'package:fordev/domain/entities/entities.dart';
+import '../../../../lib/data/http/http.dart';
+import '../../../../lib/data/usecases/usecases.dart';
+import '../../../../lib/domain/entities/entities.dart';
+import '../../../../lib/domain/helpers/helpers.dart';
 
-import 'package:fordev/data/http/http.dart';
-import 'package:fordev/data/usecases/usecases.dart';
+
 
 class HttpClientSpy extends Mock implements HttpClient {}
 
@@ -28,7 +28,6 @@ void main() {
       'count': faker.randomGenerator.integer(1000),
       'isCurrentAccountAnswer': faker.randomGenerator.boolean()
     }, {
-      'image': faker.internet.httpUrl(),
       'answer': faker.randomGenerator.string(20),
       'percent': faker.randomGenerator.integer(100),
       'count': faker.randomGenerator.integer(1000),
@@ -38,19 +37,17 @@ void main() {
   };
 
   PostExpectation mockRequest() => when(httpClient.request(
-        url: anyNamed('url'),
-        method: anyNamed('method'),
-        body: anyNamed('body'),
-      ));
+    url: anyNamed('url'),
+    method: anyNamed('method'),
+    body: anyNamed('body')
+  ));
 
   void mockHttpData(Map data) {
     surveyResult = data;
     mockRequest().thenAnswer((_) async => data);
   }
 
-  void mockHttpError(HttpError error) {
-    mockRequest().thenThrow(error);
-  }
+  void mockHttpError(HttpError error) => mockRequest().thenThrow(error);
 
   setUp(() {
     answer = faker.lorem.sentence();
@@ -63,33 +60,32 @@ void main() {
   test('Should call HttpClient with correct values', () async {
     await sut.save(answer: answer);
 
-    verify(
-        httpClient.request(url: url, method: 'put', body: {'answer': answer}));
+    verify(httpClient.request(url: url, method: 'put', body: {'answer': answer}));
   });
 
   test('Should return surveyResult on 200', () async {
     final result = await sut.save(answer: answer);
 
     expect(result, SurveyResultEntity(
-      surveyId: surveyResult['surveyId'], 
-      question: surveyResult['question'], 
+      surveyId: surveyResult['surveyId'],
+      question: surveyResult['question'],
       answers: [
         SurveyAnswerEntity(
           image: surveyResult['answers'][0]['image'],
-          answer: surveyResult['answers'][0]['answer'], 
-          isCurrentAnswer: surveyResult['answers'][0]['isCurrentAccountAnswer'], 
-          percent: surveyResult['answers'][0]['percent']
+          answer: surveyResult['answers'][0]['answer'],
+          isCurrentAnswer: surveyResult['answers'][0]['isCurrentAccountAnswer'],
+          percent: surveyResult['answers'][0]['percent'],
         ),
         SurveyAnswerEntity(
-          answer: surveyResult['answers'][1]['answer'], 
-          isCurrentAnswer: surveyResult['answers'][1]['isCurrentAccountAnswer'], 
-          percent: surveyResult['answers'][1]['percent']
-        ),
+          answer: surveyResult['answers'][1]['answer'],
+          isCurrentAnswer: surveyResult['answers'][1]['isCurrentAccountAnswer'],
+          percent: surveyResult['answers'][1]['percent'],
+        )
       ]
     ));
   });
 
-  test('Should throw UnexpectedError if HttpClient returns 200 with invalid date', () async {
+  test('Should throw UnexpectedError if HttpClient returns 200 with invalid data', () async {
     mockHttpData({'invalid_key': 'invalid_value'});
 
     final future = sut.save(answer: answer);
@@ -109,6 +105,7 @@ void main() {
     mockHttpError(HttpError.serverError);
 
     final future = sut.save(answer: answer);
+
     expect(future, throwsA(DomainError.unexpected));
   });
 

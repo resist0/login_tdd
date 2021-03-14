@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
-import 'components/components.dart';
-import 'signup_presenter.dart';
+import './components/components.dart';
+import './signup.dart';
 
 class SignUpPage extends StatelessWidget with KeyboardManager, LoadingManager, UIErrorManager, NavigationManager {
   final SignUpPresenter presenter;
@@ -19,7 +19,7 @@ class SignUpPage extends StatelessWidget with KeyboardManager, LoadingManager, U
         builder: (context) {
           handleLoading(context, presenter.isLoadingStream);
           handleMainError(context, presenter.mainErrorStream);
-          handleNavigation(presenter.navigateToStream, clearRoute: true);
+          handleNavigation(presenter.navigateToStream, clear: true);
 
           return GestureDetector(
             onTap: () => hideKeyboard(context),
@@ -28,7 +28,7 @@ class SignUpPage extends StatelessWidget with KeyboardManager, LoadingManager, U
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   LoginHeader(),
-                  HeadLine1(text: R.string.addAccount),
+                  Headline1(text: R.string.addAccount),
                   Padding(
                     padding: EdgeInsets.all(32),
                     child: Provider(
@@ -50,13 +50,13 @@ class SignUpPage extends StatelessWidget with KeyboardManager, LoadingManager, U
                             TextButton.icon(
                               onPressed: presenter.goToLogin,
                               icon: Icon(Icons.exit_to_app),
-                              label: Text(R.string.login),
+                              label: Text(R.string.login)
                             )
                           ],
                         ),
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),

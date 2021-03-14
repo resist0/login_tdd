@@ -12,11 +12,11 @@ class SurveyItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.symmetric(vertical: 20),
       child: CarouselSlider(
         options: CarouselOptions(
           enlargeCenterPage: true,
-          aspectRatio: 1,
+          aspectRatio: 1
         ),
         items: viewModels.map((viewModel) => SurveyItem(viewModel)).toList(),
       ),

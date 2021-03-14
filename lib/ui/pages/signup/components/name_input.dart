@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../helpers/helpers.dart';
-import '../signup_presenter.dart';
+import '../signup.dart';
 
 class NameInput extends StatelessWidget {
   @override
@@ -14,10 +14,7 @@ class NameInput extends StatelessWidget {
         return TextFormField(
           decoration: InputDecoration(
             labelText: R.string.name,
-            icon: Icon(
-              Icons.person,
-              color: Theme.of(context).primaryColorLight,
-            ),
+            icon: Icon(Icons.person, color: Theme.of(context).primaryColorLight),
             errorText: snapshot.hasData ? snapshot.data.description : null,
           ),
           keyboardType: TextInputType.name,

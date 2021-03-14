@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 
+import '../helpers/helpers.dart';
+
 void showLoading(BuildContext context) {
   showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) => SimpleDialog(
-      children: <Widget>[
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return SimpleDialog(
           children: <Widget>[
-            CircularProgressIndicator(),
-            SizedBox(height: 10),
-            Text('Aguarde ...', textAlign: TextAlign.center),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                CircularProgressIndicator(),
+                SizedBox(height: 10),
+                Text(R.string.wait, textAlign: TextAlign.center),
+              ],
+            ),
           ],
-        ),
-      ],
-    ),
-  );
+        );
+      });
 }
 
 void hideLoading(BuildContext context) {

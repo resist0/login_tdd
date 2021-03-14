@@ -1,10 +1,8 @@
-
 import 'package:meta/meta.dart';
 
-import 'package:fordev/domain/entities/entities.dart';
+import '../../../domain/entities/entities.dart';
 import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
-
 import '../../http/http.dart';
 import '../../models/models.dart';
 
@@ -14,7 +12,7 @@ class RemoteAddAccount implements AddAccount {
 
   RemoteAddAccount({
     @required this.httpClient,
-    @required this.url,
+    @required this.url
   });
 
   Future<AccountEntity> add(AddAccountParams params) async {
@@ -22,12 +20,11 @@ class RemoteAddAccount implements AddAccount {
     try {
       final httpResponse = await httpClient.request(url: url, method: 'post', body: body);
       return RemoteAccountModel.fromJson(httpResponse).toEntity();
-    } on HttpError catch (error) {
+    } on HttpError catch(error) {
       throw error == HttpError.forbidden
-          ? DomainError.emailInUse
-          : DomainError.unexpected;
+        ? DomainError.emailInUse
+        : DomainError.unexpected;
     }
-
   }
 }
 
@@ -41,20 +38,19 @@ class RemoteAddAccountParams {
     @required this.name,
     @required this.email,
     @required this.password,
-    @required this.passwordConfirmation,
+    @required this.passwordConfirmation
   });
 
-  factory RemoteAddAccountParams.fromDomain(AddAccountParams params) =>
-      RemoteAddAccountParams(
-        name: params.name,
-        email: params.email, 
-        password: params.password,
-        passwordConfirmation: params.passwordConfirmation,
-      );
+  factory RemoteAddAccountParams.fromDomain(AddAccountParams params) => RemoteAddAccountParams(
+    name: params.name,
+    email: params.email,
+    password: params.password,
+    passwordConfirmation: params.passwordConfirmation,
+  );
 
   Map toJson() => {
-    'name': name, 
-    'email': email, 
+    'name': name,
+    'email': email,
     'password': password,
     'passwordConfirmation': passwordConfirmation,
   };

@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
 
-import '../http/http.dart';
 import '../../domain/entities/entities.dart';
+import '../http/http.dart';
 
 class RemoteSurveyAnswerModel {
   final String image;
@@ -29,9 +29,9 @@ class RemoteSurveyAnswerModel {
   }
 
   SurveyAnswerEntity toEntity() => SurveyAnswerEntity(
-        image: image,
-        answer: answer,
-        isCurrentAnswer: isCurrentAccountAnswer,
-        percent: percent,
-      );
+    image: image,
+    answer: answer,
+    isCurrentAnswer: isCurrentAccountAnswer,
+    percent: percent,
+  );
 }

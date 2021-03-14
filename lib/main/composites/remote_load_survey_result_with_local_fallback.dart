@@ -3,7 +3,6 @@ import 'package:meta/meta.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
-
 import '../../data/usecases/usecases.dart';
 
 class RemoteLoadSurveyResultWithLocalFallback implements LoadSurveyResult {
@@ -20,7 +19,7 @@ class RemoteLoadSurveyResultWithLocalFallback implements LoadSurveyResult {
       final surveyResult = await remote.loadBySurvey(surveyId: surveyId);
       await local.save(surveyResult);
       return surveyResult;
-    } catch (error) {
+    } catch(error) {
       if (error == DomainError.accessDenied) {
         rethrow;
       }

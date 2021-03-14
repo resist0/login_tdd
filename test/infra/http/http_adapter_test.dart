@@ -3,9 +3,10 @@ import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'package:fordev/data/http/http.dart';
+import '../../../lib/data/http/http.dart';
+import '../../../lib/infra/http/http.dart';
 
-import 'package:fordev/infra/http/http.dart';
+
 
 class ClientSpy extends Mock implements Client {}
 
@@ -20,55 +21,47 @@ void main() {
     url = faker.internet.httpUrl();
   });
 
-
   group('shared', () {
     test('Should throw ServerError if invalid method is provided', () async {
       final future = sut.request(url: url, method: 'invalid_method');
 
       expect(future, throwsA(HttpError.serverError));
     });
-  
   });
 
-
   group('post', () {
+    PostExpectation mockRequest() =>
+      when(client.post(any, body: anyNamed('body'), headers: anyNamed('headers')));
 
-    PostExpectation mockRequest() => when(
-        client.post(any, body: anyNamed('body'), headers: anyNamed('headers')));
-
-    void mockResponse(int statusCode, {String body = '{"any_key":"any_key"}'}) {
+    void mockResponse(int statusCode, {String body = '{"any_key":"any_value"}'}) =>
       mockRequest().thenAnswer((_) async => Response(body, statusCode));
-    }
 
-    void mockError() {
-      mockRequest().thenThrow(Exception());
-    }
+    void mockError() => mockRequest().thenThrow(Exception());
 
     setUp(() {
       mockResponse(200);
     });
-
 
     test('Should call post with correct values', () async {
       await sut.request(url: url, method: 'post', body: {'any_key': 'any_value'});
       verify(client.post(
         url,
         headers: {
-          'content-type': 'application/json ',
-          'accept': 'application/json',
+          'content-type': 'application/json',
+          'accept': 'application/json'
         },
-        body: '{"any_key":"any_value"}',
+        body: '{"any_key":"any_value"}'
       ));
 
       await sut.request(url: url, method: 'post', body: {'any_key': 'any_value'}, headers: {'any_header': 'any_value'});
       verify(client.post(
         url,
         headers: {
-          'content-type': 'application/json ',
+          'content-type': 'application/json',
           'accept': 'application/json',
-          'any_header': 'any_value',
+          'any_header': 'any_value'
         },
-        body: '{"any_key":"any_value"}',
+        body: '{"any_key":"any_value"}'
       ));
     });
 
@@ -77,14 +70,14 @@ void main() {
 
       verify(client.post(
         any,
-        headers: anyNamed('headers'),
+        headers: anyNamed('headers')
       ));
     });
 
     test('Should return data if post returns 200', () async {
       final response = await sut.request(url: url, method: 'post');
 
-      expect(response, {'any_key': 'any_key'});
+      expect(response, {'any_key': 'any_value'});
     });
 
     test('Should return null if post returns 200 with no data', () async {
@@ -166,53 +159,46 @@ void main() {
 
       expect(future, throwsA(HttpError.serverError));
     });
-
   });
 
-
   group('get', () {
+    PostExpectation mockRequest() =>
+      when(client.get(any, headers: anyNamed('headers')));
 
-    PostExpectation mockRequest() => when(
-        client.get(any, headers: anyNamed('headers')));
-
-    void mockResponse(int statusCode, {String body = '{"any_key":"any_key"}'}) {
+    void mockResponse(int statusCode, {String body = '{"any_key":"any_value"}'}) =>
       mockRequest().thenAnswer((_) async => Response(body, statusCode));
-    }
 
-    void mockError() {
-      mockRequest().thenThrow(Exception());
-    }
+    void mockError() => mockRequest().thenThrow(Exception());
 
     setUp(() {
       mockResponse(200);
     });
-
 
     test('Should call get with correct values', () async {
       await sut.request(url: url, method: 'get');
       verify(client.get(
         url,
         headers: {
-          'content-type': 'application/json ',
-          'accept': 'application/json',
-        },
+          'content-type': 'application/json',
+          'accept': 'application/json'
+        }
       ));
 
       await sut.request(url: url, method: 'get', headers: {'any_header': 'any_value'});
       verify(client.get(
         url,
         headers: {
-          'content-type': 'application/json ',
+          'content-type': 'application/json',
           'accept': 'application/json',
-          'any_header': 'any_value',
-        },
+          'any_header': 'any_value'
+        }
       ));
     });
 
     test('Should return data if get returns 200', () async {
       final response = await sut.request(url: url, method: 'get');
 
-      expect(response, {'any_key': 'any_key'});
+      expect(response, {'any_key': 'any_value'});
     });
 
     test('Should return null if get returns 200 with no data', () async {
@@ -294,48 +280,41 @@ void main() {
 
       expect(future, throwsA(HttpError.serverError));
     });
-
   });
 
-
   group('put', () {
+    PostExpectation mockRequest() =>
+      when(client.put(any, body: anyNamed('body'), headers: anyNamed('headers')));
 
-    PostExpectation mockRequest() => when(
-        client.put(any, body: anyNamed('body'), headers: anyNamed('headers')));
-
-    void mockResponse(int statusCode, {String body = '{"any_key":"any_key"}'}) {
+    void mockResponse(int statusCode, {String body = '{"any_key":"any_value"}'}) =>
       mockRequest().thenAnswer((_) async => Response(body, statusCode));
-    }
 
-    void mockError() {
-      mockRequest().thenThrow(Exception());
-    }
+    void mockError() => mockRequest().thenThrow(Exception());
 
     setUp(() {
       mockResponse(200);
     });
-
 
     test('Should call put with correct values', () async {
       await sut.request(url: url, method: 'put', body: {'any_key': 'any_value'});
       verify(client.put(
         url,
         headers: {
-          'content-type': 'application/json ',
-          'accept': 'application/json',
+          'content-type': 'application/json',
+          'accept': 'application/json'
         },
-        body: '{"any_key":"any_value"}',
+        body: '{"any_key":"any_value"}'
       ));
 
       await sut.request(url: url, method: 'put', body: {'any_key': 'any_value'}, headers: {'any_header': 'any_value'});
       verify(client.put(
         url,
         headers: {
-          'content-type': 'application/json ',
+          'content-type': 'application/json',
           'accept': 'application/json',
-          'any_header': 'any_value',
+          'any_header': 'any_value'
         },
-        body: '{"any_key":"any_value"}',
+        body: '{"any_key":"any_value"}'
       ));
     });
 
@@ -344,14 +323,14 @@ void main() {
 
       verify(client.put(
         any,
-        headers: anyNamed('headers'),
+        headers: anyNamed('headers')
       ));
     });
 
     test('Should return data if put returns 200', () async {
       final response = await sut.request(url: url, method: 'put');
 
-      expect(response, {'any_key': 'any_key'});
+      expect(response, {'any_key': 'any_value'});
     });
 
     test('Should return null if put returns 200 with no data', () async {
@@ -433,7 +412,5 @@ void main() {
 
       expect(future, throwsA(HttpError.serverError));
     });
-
   });
-
 }

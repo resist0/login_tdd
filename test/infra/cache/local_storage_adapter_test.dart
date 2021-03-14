@@ -3,7 +3,9 @@ import 'package:localstorage/localstorage.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'package:fordev/infra/cache/cache.dart';
+import '../../../lib/infra/cache/cache.dart';
+
+
 
 class LocalStorageSpy extends Mock implements LocalStorage {}
 
@@ -13,11 +15,9 @@ void main() {
   String key;
   dynamic value;
 
-  void mockDeleteError() =>
-      when(localStorage.deleteItem(any)).thenThrow(Exception());
+  void mockDeleteError() => when(localStorage.deleteItem(any)).thenThrow(Exception());
 
-  void mockSaveError() =>
-      when(localStorage.setItem(any, any)).thenThrow(Exception());
+  void mockSaveError() => when(localStorage.setItem(any, any)).thenThrow(Exception());
 
   setUp(() {
     key = faker.randomGenerator.string(5);
@@ -42,9 +42,9 @@ void main() {
       expect(future, throwsA(TypeMatcher<Exception>()));
     });
 
-    test('Should throw if setItem throws', () async {
+    test('Should throw if deleteItem throws', () async {
       mockSaveError();
-
+      
       final future = sut.save(key: key, value: value);
 
       expect(future, throwsA(TypeMatcher<Exception>()));
@@ -74,7 +74,7 @@ void main() {
 
     void mockFetch() {
       result = faker.randomGenerator.string(50);
-      mockFetchCall().thenAnswer((_) => result);
+      mockFetchCall().thenAnswer((_) async => result);
     }
 
     void mockFetchError() => mockFetchCall().thenThrow(Exception());
@@ -83,7 +83,7 @@ void main() {
       mockFetch();
     });
 
-    test('Should call localStorage with correct values', () async {
+    test('Should call localStorage with correct value', () async {
       await sut.fetch(key);
 
       verify(localStorage.getItem(key)).called(1);

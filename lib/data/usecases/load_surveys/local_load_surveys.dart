@@ -3,9 +3,8 @@ import 'package:meta/meta.dart';
 import '../../../domain/entities/entities.dart';
 import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
-
-import '../../models/models.dart';
 import '../../cache/cache.dart';
+import '../../models/models.dart';
 
 class LocalLoadSurveys implements LoadSurveys {
   final CacheStorage cacheStorage;
@@ -19,7 +18,7 @@ class LocalLoadSurveys implements LoadSurveys {
         throw Exception();
       }
       return _mapToEntity(data);
-    } catch (error) {
+    } catch(error) {
       throw DomainError.unexpected;
     }
   }
@@ -28,7 +27,7 @@ class LocalLoadSurveys implements LoadSurveys {
     try {
       final data = await cacheStorage.fetch('surveys');
       _mapToEntity(data);
-    } catch (error) {
+    } catch(error) {
       await cacheStorage.delete('surveys');
     }
   }
@@ -36,16 +35,14 @@ class LocalLoadSurveys implements LoadSurveys {
   Future<void> save(List<SurveyEntity> surveys) async {
     try {
       await cacheStorage.save(key: 'surveys', value: _mapToJson(surveys));
-    } catch (error) {
+    } catch(error) {
       throw DomainError.unexpected;
     }
   }
 
-  List<SurveyEntity> _mapToEntity(dynamic list) => list
-      .map<SurveyEntity>((json) => LocalSurveyModel.fromJson(json).toEntity())
-      .toList();
+  List<SurveyEntity> _mapToEntity(dynamic list) =>
+    list.map<SurveyEntity>((json) => LocalSurveyModel.fromJson(json).toEntity()).toList();
 
-  List<Map> _mapToJson(List<SurveyEntity> list) => list
-      .map((entity) => LocalSurveyModel.fromEntity(entity).toJson())
-      .toList();
+  List<Map> _mapToJson(List<SurveyEntity> list) =>
+    list.map((entity) => LocalSurveyModel.fromEntity(entity).toJson()).toList();
 }

@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
 
-import '../http/http.dart';
 import '../../domain/entities/entities.dart';
+import '../http/http.dart';
 import './models.dart';
 
 class RemoteSurveyResultModel {
@@ -27,8 +27,8 @@ class RemoteSurveyResultModel {
   }
 
   SurveyResultEntity toEntity() => SurveyResultEntity(
-        surveyId: surveyId,
-        question: question,
-        answers: answers.map<SurveyAnswerEntity>((answer) => answer.toEntity()).toList(),
-      );
+    surveyId: surveyId,
+    question: question,
+    answers: answers.map<SurveyAnswerEntity>((answer) => answer.toEntity()).toList(),
+  );
 }

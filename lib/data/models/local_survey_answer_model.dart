@@ -16,38 +16,35 @@ class LocalSurveyAnswerModel {
   });
 
   factory LocalSurveyAnswerModel.fromJson(Map json) {
-    if (!json.keys
-        .toSet()
-        .containsAll(['answer', 'isCurrentAnswer', 'percent'])) {
+    if (!json.keys.toSet().containsAll(['answer', 'isCurrentAnswer', 'percent'])) {
       throw Exception();
     }
     return LocalSurveyAnswerModel(
       image: json['image'],
       answer: json['answer'],
       isCurrentAnswer: bool.fromEnvironment(json['isCurrentAnswer']),
-      percent: int.parse(json['percent']),
+      percent: int.parse(json['percent'])
     );
   }
 
-  factory LocalSurveyAnswerModel.fromEntity(SurveyAnswerEntity entity) =>
-      LocalSurveyAnswerModel(
-        image: entity.image,
-        answer: entity.answer,
-        percent: entity.percent,
-        isCurrentAnswer: entity.isCurrentAnswer,
-      );
+  factory LocalSurveyAnswerModel.fromEntity(SurveyAnswerEntity entity) => LocalSurveyAnswerModel(
+    image: entity.image,
+    answer: entity.answer,
+    percent: entity.percent,
+    isCurrentAnswer: entity.isCurrentAnswer
+  );
 
   SurveyAnswerEntity toEntity() => SurveyAnswerEntity(
-        image: image,
-        answer: answer,
-        isCurrentAnswer: isCurrentAnswer,
-        percent: percent,
-      );
+    image: image,
+    answer: answer,
+    isCurrentAnswer: isCurrentAnswer,
+    percent: percent
+  );
 
   Map toJson() => {
-        'image': image,
-        'answer': answer,
-        'isCurrentAnswer': isCurrentAnswer.toString(),
-        'percent': percent.toString(),
-      };
+    'image': image,
+    'answer': answer,
+    'isCurrentAnswer': isCurrentAnswer.toString(),
+    'percent': percent.toString()
+  };
 }
