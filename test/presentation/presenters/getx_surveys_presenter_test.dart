@@ -73,9 +73,14 @@ void main() {
     await sut.loadData();
   });
 
-  test('Should go to SurvyResultPage on survey click', () async {
-    sut.navigateToStream.listen(expectAsync1((page) => expect(page, '/survey_result/any_route')));
+  test('Should go to SurveyResultPage on survey click', () async {
+    expectLater(sut.navigateToStream, emitsInOrder([
+      '/survey_result/any_route',
+      '/survey_result/any_route'
 
+    ]));
+
+    sut.goToSurveyResult('any_route');
     sut.goToSurveyResult('any_route');
   });
 }
